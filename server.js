@@ -103,6 +103,9 @@ app.post('/scrape', async (req, res) => {
       }
     });
 
+    console.log('MCP result:', JSON.stringify(result, null, 2));
+    console.log('Content length:', result.content ? result.content.length : 0);
+
     res.json({
       success: true,
       url,
