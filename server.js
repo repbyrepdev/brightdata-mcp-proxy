@@ -69,6 +69,8 @@ app.get('/health', (req, res) => {
   res.json({
     status: 'ok',
     mcp_connected: mcpClient !== null,
+    api_token_configured: !!process.env.BRIGHTDATA_API_TOKEN,
+    api_token_length: process.env.BRIGHTDATA_API_TOKEN ? process.env.BRIGHTDATA_API_TOKEN.length : 0,
     timestamp: new Date().toISOString()
   });
 });
