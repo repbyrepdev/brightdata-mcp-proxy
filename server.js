@@ -95,9 +95,9 @@ app.post('/scrape', async (req, res) => {
 
     console.log(`Scraping URL: ${url}`);
 
-    // Call BrightData MCP tool - use scrape_as_html (free tier)
+    // Call BrightData MCP tool - use scrape_as_markdown (free tier)
     const result = await mcpClient.callTool({
-      name: 'scrape_as_html',
+      name: 'scrape_as_markdown',
       arguments: {
         url,
         ...options
