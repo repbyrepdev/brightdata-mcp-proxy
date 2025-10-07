@@ -94,7 +94,7 @@ app.post('/scrape', async (req, res) => {
 
     // Call BrightData MCP tool
     const result = await mcpClient.callTool({
-      name: 'scrape_url',
+      name: 'scrape_as_markdown',
       arguments: {
         url,
         ...options
@@ -141,7 +141,7 @@ app.post('/scrape/batch', async (req, res) => {
     const results = await Promise.allSettled(
       urls.map(url =>
         mcpClient.callTool({
-          name: 'scrape_url',
+          name: 'scrape_as_markdown',
           arguments: { url, ...options }
         })
       )
