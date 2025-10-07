@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: brightdata-mcp-proxy
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: BRIGHTDATA_API_TOKEN
+        sync: false
+    healthCheckPath: /health
