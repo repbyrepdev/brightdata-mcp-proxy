@@ -36,8 +36,8 @@ async function initializeMCP() {
       args: ['-y', '@brightdata/mcp'],
       env: {
         ...process.env,
-        API_TOKEN: process.env.BRIGHTDATA_API_TOKEN,
-        PRO_MODE: 'true'
+        API_TOKEN: process.env.BRIGHTDATA_API_TOKEN
+        // PRO_MODE removed - using free tier Rapid mode
       }
     });
 
