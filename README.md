@@ -4,6 +4,57 @@ REST API proxy for BrightData MCP (Model Context Protocol) server. Enables cloud
 
 ---
 
+## 🌳 Branch Workflow (Development vs Production)
+
+### Branches:
+- **`master`** = Production (stable, tested code)
+  - May auto-deploy to Render when pushed (not guaranteed)
+  - Tagged with stable versions (v1.0, v1.1, v1.2)
+  - Only merge here when fully tested and ready for production
+
+- **`development`** = Testing (work-in-progress code)
+  - Does NOT auto-deploy (safe to push without affecting production)
+  - Use for testing new scraping features, experimental changes
+  - Manually deploy via Render dashboard if needed for testing
+
+### How to Interact with Claude Code:
+
+**Working on New Features:**
+```
+"Switch to development branch and update scraping logic"
+```
+Claude will: `git checkout development`, make changes, commit, push to development (no auto-deploy)
+
+**Testing Development Branch Live:**
+```
+"Check Render dashboard to manually deploy development branch"
+```
+Manual steps: Visit https://dashboard.render.com, select brightdata-mcp-proxy, click "Manual Deploy"
+
+**Merging to Production:**
+```
+"The development branch works great - merge to master and tag as v1.1"
+```
+Claude will: `git checkout master`, `git merge development`, `git tag -a v1.1 -m "message"`, `git push` (may auto-deploy)
+
+**Switching Back to Production:**
+```
+"Switch back to master branch"
+```
+Claude will: `git checkout master` (instantly back to production code)
+
+**Rolling Back:**
+```
+"Rollback all repos to v1.0"
+```
+Claude will: `git reset --hard v1.0`, force push, check Render dashboard for manual redeploy
+
+### Version Tagging Convention:
+- `v1.0` = Stable production
+- `v1.1-dev` = Development/testing tag (not a release)
+- `v1.1` = Stable production (tested and ready)
+
+
 ## 🚀 QUICK START FOR CLAUDE CODE
 
 ### Commands to Ingest Before Working on This Project
@@ -870,6 +921,30 @@ cd C:\Langchain\brightdata-mcp-proxy
 git reset --hard 6c8b6f4
 git push origin main --force
 ```
+
+---
+
+
+## 🔄 Git Rollback & Redeployment
+
+**NOTE:** Render *may* auto-deploy when you force push to master, but it's not guaranteed.
+
+When rolling back with `git reset --hard <commit>` and `git push --force`:
+- The code is reverted in GitHub ✅
+- Render *might* auto-deploy ⚠️
+
+**To be safe, check Render dashboard and manually trigger redeploy if needed:**
+1. Go to https://dashboard.render.com
+2. Select brightdata-mcp-proxy service
+3. Click "Manual Deploy" → "Deploy latest commit" if not auto-triggered
+
+**For Cloud Run services (verifier and chat-bot), always manually trigger:**
+```bash
+gcloud builds triggers run competitor-verifier-autodeploy --branch=master
+gcloud builds triggers run competitor-chat-bot-autodeploy --branch=master
+```
+
+**Why?** Cloud Build triggers watch for new commits pushed to master. A force push with `git reset --hard` doesn't create a new commit—it just moves the branch pointer backwards.
 
 ---
 
